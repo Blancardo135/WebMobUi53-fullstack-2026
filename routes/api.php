@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\v1\ApiFooController;
 use App\Http\Controllers\Api\v1\ApiPollController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Poll;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -18,9 +19,9 @@ Route::apiResource('v1/posts', ApiPostController::class)
 
 Route::get('/v1/polls/{token}', [ApiPollController::class, 'show']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/foo', [ApiFooController::class, 'show']);
     Route::post('/v1/foo', [ApiFooController::class, 'store']);
     Route::get('/v1/polls', [ApiPollController::class, 'index']);
-    // Route::delete('/v1/polls/{id}', [ApiPollController::class, 'remove']);
-// });
+    Route::delete('/v1/polls/{poll}', [ApiPollController::class, 'destroy']);
+});
