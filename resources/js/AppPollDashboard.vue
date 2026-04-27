@@ -9,26 +9,25 @@
     loginUrl: { type: String, default: null },
   });
 
-  const test = 2;
 
   const { fetchApiToRef } = useFetchApi();
 
   const { data: getResult, error: getError, fetchNow } = fetchApiToRef({ url: 'polls/' });
-  const { data: postResult, error: postError } = fetchApiToRef({ url: '/foo', data: { id: 1 } });
+  // const { data: postResult, error: postError } = fetchApiToRef({ url: '/foo', data: { id: 1 } });
 
-  function handleError(err) {
-    if (!err) return;
-    if (err?.status === 401) {
-      window.location.href = props.loginUrl;
-    } else {
-      console.error(err);
-    }
-  }
+  // function handleError(err) {
+  //   if (!err) return;
+  //   if (err?.status === 401) {
+  //     window.location.href = props.loginUrl;
+  //   } else {
+  //     console.error(err);
+  //   }
+  // }
 
-  watch(getError, err => handleError(err));
-  watch(postError, handleError);
+  // watch(getError, err => handleError(err));
+  // watch(postError, handleError);
 
-  usePolling(fetchNow);
+  // usePolling(fetchNow);
 </script>
 
 <template>
