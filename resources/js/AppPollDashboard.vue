@@ -1,6 +1,7 @@
 <script setup>
-  import { watch } from 'vue';
+  import { watch, ref } from 'vue';
   import PollTable from './components/PollTable.vue';
+  import PollEditor from './components/PollEditor.vue';
   import { useFetchApi } from './composables/useFetchApi';
   import { usePolling } from './composables/usePolling';
 
@@ -9,6 +10,7 @@
     loginUrl: { type: String, default: null },
   });
 
+  const showCreationForm = ref(false);
 
   const { fetchApiToRef } = useFetchApi();
 
@@ -33,7 +35,12 @@
 <template>
   <main class="min-h-screen p-6">
     <h1 class="mb-4 text-xl font-semibold">Mes sondages</h1>
+    <button @click="showCreationForm = !showCreationForm" class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-black-600
+                     transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40">
+    {{ showCreationForm ? 'Annuler' : 'Nouveau sondage' }}
+    </button>
 
-    <PollTable :polls="props.polls" />
+  <PollEditor v-if="showCreationForm"></PollEditor>
+  <PollTable v-else :polls="props.polls" />
   </main>
 </template>

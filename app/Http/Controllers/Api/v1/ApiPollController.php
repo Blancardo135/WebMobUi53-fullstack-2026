@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PollOption;
+use Illuminate\Support\Str;
 
 class ApiPollController extends Controller
 {
@@ -36,6 +38,49 @@ class ApiPollController extends Controller
 
         return $poll;
     }
+
+    public function store (Request $request)
+    {
+        $validated = $request->validate([
+        'title'                  => 'nullable|string|max:255',
+        'question'               => 'required|string|max:255',
+        'is_draft'               => 'boolean',
+        'allow_multiple_choices' => 'boolean',
+        'allow_vote_change'      => 'boolean',
+        'results_public'         => 'boolean',
+        'duration'               => 'nullable|integer|min:1',
+        'ends_at'                => 'nullable|date|after:now',
+        'options'                => 'required|array|min:2',
+        //pr appliquer a tt les labels, npo le *
+        'options.*.label'        => 'required|string|max:255',
+    ]);
+
+    $user = $request->user();
+    $poll = new Poll();
+
+    $poll->title = $validated['title'] ?? null;
+    $poll->question = $validated['question'];
+    $poll->secret_token = Str::random(32);
+    $poll->is_draft = $validated['is_draft'] ?? true;
+    $poll->allow_multiple_choices = $validated['allow_multiple_choices'] ?? false;
+    $poll->allow_vote_change = $validated['allow_vote_change'] ?? false;
+    $poll->results_public = $validated['results_public'] ?? false;
+    $poll->duration = $validated['duration'] ?? null;
+    $poll->ends_at = $validated['ends_at'] ?? null;
+    $poll->user()->associate($user);
+    $poll->save();
+    
+
+    foreach ($validated['options'] as $optionData) {
+        $option = new PollOption();
+        //pr assigner chaque valeur au label qui corresp.
+        $option->label = $optionData['label'];
+        $option->poll()->associate($poll);
+        $option->save();
+    }
+    //pr que vue aille les réponses
+    return $poll->load('options');
+}
 
     public function destroy(Request $request, Poll $poll)
         {
