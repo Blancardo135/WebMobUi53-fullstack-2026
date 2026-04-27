@@ -9,6 +9,8 @@
     loginUrl: { type: String, default: null },
   });
 
+  const test = 2;
+
   const { fetchApiToRef } = useFetchApi();
 
   const { data: getResult, error: getError, fetchNow } = fetchApiToRef({ url: 'polls/' });
