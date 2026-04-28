@@ -9,3 +9,7 @@ Ensuite, j'ai aussi gérer la logique de la méthode store et sa route associée
 J'ai utilisé le fichier PollTable.vue pour gérer la logique d'affichage du dashboard, ensuite lié à AppPollDashboard.vue. Au sein de PollTable.vue, j'ai implémenté également (pour le moment) la fonction de suppression d'une ligne. Cela sera peut-être amené à changer.
 
 J'ai également créé PollEditor.vue qui me sert de formulaire de création sur ma page, qui va venir cacher le dashboard et afficher un form de création pour ajouter des sondages. La structure de ce fichier devrait me re servir pour la fonctionnalité future de modification d'un sondage.
+
+## Période d'avancée - 28.04.2026
+## Implémentations frontend
+Avec peu de temps devant moi, je me suis occupé d'implémenter la fonction et le bouton nécessaire pour copier le lien fictif du sondage. J'ai décidé de l'implémenter comme ceci pour le moment et de l'ajouter dans la colonne action de mon tableau. Je réfléchis aussi pour la prochaine fois à créer un composant pour les boutons, à voir.

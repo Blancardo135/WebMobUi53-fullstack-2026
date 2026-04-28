@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useFetchApi } from '../composables/useFetchApi';
+const copied = ref(null);
 
   const props = defineProps({
     polls: { type: Array, default: () => [] },
@@ -29,6 +30,14 @@ import { useFetchApi } from '../composables/useFetchApi';
       loadingId.value = null;
     }
   };
+  
+  //ma fonction pr le lien
+  const copyLink = (secretToken) =>{
+    navigator.clipboard.writeText(window.location.origin + '/vote/' + secretToken);
+    copied.value = secretToken;
+    // pr l'ui
+    setTimeout(() => copied.value = null, 2000);
+  }
 </script>
 
 <template>
@@ -96,6 +105,12 @@ import { useFetchApi } from '../composables/useFetchApi';
               class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600
                      transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-40">
               {{ loadingId === poll.id ? 'En cours de supression' : 'Supprimer' }}
+            </button>
+            <button
+            @click="copyLink(poll.secret_token)"
+            class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600
+                     transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-40">
+              {{ copied === poll.secret_token ? 'Copié !' : 'Copier le lien' }}
             </button>
           </td>
 
