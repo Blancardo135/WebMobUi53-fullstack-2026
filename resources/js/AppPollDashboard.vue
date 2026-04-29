@@ -1,7 +1,7 @@
 <script setup>
   import { watch, ref } from 'vue';
   import PollTable from './components/PollTable.vue';
-  import PollEditor from './components/PollEditor.vue';
+  import PollCreate from './components/PollCreate.vue';
   import { useFetchApi } from './composables/useFetchApi';
   import { usePolling } from './composables/usePolling';
 
@@ -40,7 +40,7 @@
     {{ showCreationForm ? 'Annuler' : 'Nouveau sondage' }}
     </button>
 
-  <PollEditor v-if="showCreationForm"></PollEditor>
+  <PollCreate v-if="showCreationForm"></PollCreate>
   <PollTable v-else :polls="props.polls" />
   </main>
 </template>

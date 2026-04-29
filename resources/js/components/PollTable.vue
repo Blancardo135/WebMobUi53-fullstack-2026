@@ -2,10 +2,14 @@
 import { ref } from 'vue';
 import { useFetchApi } from '../composables/useFetchApi';
 const copied = ref(null);
+import PollEdit from './PollEdit.vue';
 
   const props = defineProps({
     polls: { type: Array, default: () => [] },
   });
+
+  //pr le PollEdit.vue
+  const editingPoll = ref(null);
 
   const { fetchApi } = useFetchApi();
   //loadingId me permet de suivre l'ID du sondage supprimé.
@@ -100,6 +104,11 @@ const copied = ref(null);
 
           <td class="px-4 py-3">
             <button
+              @click="editingPoll = poll"
+              class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-100">
+                Modifier
+              </button>
+            <button
               @click="deletePoll(poll.id)"
               :disabled="loadingId === poll.id"
               class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600
@@ -119,6 +128,7 @@ const copied = ref(null);
 
     </table>
   </div>
+  <PollEdit v-if="editingPoll" :poll="editingPoll" />
 </template>
 
 <!-- <template>
