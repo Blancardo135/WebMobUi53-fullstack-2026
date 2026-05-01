@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PollDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\VoteController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +40,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('tokens', TokenController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
+
+Route::get('/vote/{token}', [VoteController::class, 'show'])->name('vote.show');

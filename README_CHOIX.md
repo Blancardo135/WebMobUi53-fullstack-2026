@@ -21,3 +21,13 @@ J'ai créé un nouveau composant PollEdit.vue qui me permet de mettre à jour mo
 ### Implémentations backend
 J'ai aussi ajouté une route qui correspond avec la méthode PUT et j'ai modifié le ApiPollController pour qu'il corresponde égalment avec une méthode qui fonctionne. J'ai également modifié la façon de récupérer le poll en ajoutant withOptions pour pallier à un bug et être sur de pouvoir modifier.
 
+## Période d'avancée - 01.05.26
+### Implémentation frontend
+J'ai décidé de rajouter une vue blade qui serait "vote.blade.php" en plus de celle concernant le dashboard. Ensuite, j'ai repris le pattern existant de poll-dashboard.js et AppPollDashboard.vue pour faire monter l'appplication et avoir un point d'entrée.
+
+Pour ce faire j'ai créé vote.js (point d'entrée) et ensuite AppVotePage.vue (autre app pour un affichage optimale).
+
+J'ai (enfin) décidé de créer un PollForm.vue pour recentraliser la gestion de mes sondages, en y utilisant emit pour essayer de pallier à ces problèmes de PollCreate et PollEdit.
+### Implémentation backend
+Pour afficher un sondage à partir d'un lien, j'ai déjé créé "VoteController" afin de pouvoir afficher un sondage, avec une unique fonction "show" qui me retourne la vue concernant un vote. En parrallèle, j'ai implémenté une nouvelle route (sans middleware) pour que la vue soit accessible par tout le monde.
+
