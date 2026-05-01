@@ -47,5 +47,44 @@ const updateOptionLabel = (index, value)=>{
 </script>
 
 <template>
+<!-- titre -->
+ <div>
+ <label for="">Title</label>
+ <input
+    :value="title"
+    @input="emit('update:title'), $event.target.value"
+    type="text"
+    placeholder="Titre du sondage (Optionnel)"
+ />
+
+ <!-- question -->
+  <div>
+    <label>Question</label>
+    <input
+    :value="question"
+    @input="emit('update:question', $event.target.value)"
+    type="text"
+    placeholder="Écrivez votre quiestion : "
+    />
+  </div>
+  
+  <div>
+    <label for="">Options</label>
+    <div v-for="(option, index) in options" :key="index"></div>
+    <input
+    :value="option.label"
+    @input="updateOptionLabel(index, $event.target.value)"
+    type="text"
+    :placeholder= "`Options ${index+1}` "
+    />
+    <button
+    v-if="options.length > 2"
+    @click="removeOption(index)"
+    >Supprimer cette option</button>
+  </div>
+  <button
+  @click="addOption"
+  >Ajouter une option</button>
+ </div>
 
 </template>
