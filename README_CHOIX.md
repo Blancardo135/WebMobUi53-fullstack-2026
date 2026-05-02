@@ -31,3 +31,7 @@ J'ai (enfin) décidé de créer un PollForm.vue pour recentraliser la gestion de
 ### Implémentation backend
 Pour afficher un sondage à partir d'un lien, j'ai déjé créé "VoteController" afin de pouvoir afficher un sondage, avec une unique fonction "show" qui me retourne la vue concernant un vote. En parrallèle, j'ai implémenté une nouvelle route (sans middleware) pour que la vue soit accessible par tout le monde.
 
+## Période d'avancée - 02.05.26
+### Implémentation frontend
+J'ai continué d'implémenter mon fichier PollForm.vue, qui me sert maintenant de composant principal pour le sondage. J'ai utilisé emit afin de pouvoir envoyer des informations depuis l'enfant (pollform) vers le parent PollCreate.vue que j'ai refactoré avec l'utilisation de PollForm. J'ai donc implémenté des v-model pour transmettre les valeurs et écouter les changements.
+

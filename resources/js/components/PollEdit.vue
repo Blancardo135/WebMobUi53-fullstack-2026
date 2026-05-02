@@ -11,7 +11,8 @@ const props = defineProps({
 })
 const title = ref(props.poll.title);
 const question = ref(props.poll.question);
-const options = ref(props.poll.options);
+// const options = ref(props.poll.options);
+const options = ref(props.poll.options.map(o => ({ label: o.label })));
 const isDraft = ref(props.poll.is_draft);
 const allowMultipleChoices = ref(props.poll.allow_multiple_choices);
 const allowVoteChange = ref(props.poll.allow_vote_change);
