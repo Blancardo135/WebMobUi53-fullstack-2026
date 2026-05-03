@@ -35,3 +35,9 @@ Pour afficher un sondage à partir d'un lien, j'ai déjé créé "VoteController
 ### Implémentation frontend
 J'ai continué d'implémenter mon fichier PollForm.vue, qui me sert maintenant de composant principal pour le sondage. J'ai utilisé emit afin de pouvoir envoyer des informations depuis l'enfant (pollform) vers le parent PollCreate.vue que j'ai refactoré avec l'utilisation de PollForm. J'ai donc implémenté des v-model pour transmettre les valeurs et écouter les changements.
 
+## Période d'avancée - 03.05.26
+### Implémentations frontend
+Puisque je ne peux pas avancer sur le reste de la structure de modification, j'en ai profité pour regarder la structure d'un composant PollVote.vue, qui contiendra la logique de vote.
+### Implémentations backend
+En attendant le retour du prof sur mes questions front, j'en ai profité pour implémenter les questions backend qui concernent les choix multiples, les changements de votes etc..
+Pour ce faire, j'ai du ajouter une route "vote" que j'ai ensuite développer en fonction dans ApiPollController. Cela me permet d'enregistrer côté backend les aspects de votes multiples et de changement de votes.

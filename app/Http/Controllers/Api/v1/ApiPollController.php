@@ -7,6 +7,7 @@ use App\Models\Poll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PollOption;
+use App\Models\PollVote;
 use Illuminate\Support\Str;
 
 class ApiPollController extends Controller
@@ -121,7 +122,7 @@ class ApiPollController extends Controller
     $poll->duration = $validated['duration'] ?? null;
     $poll->save();
 
-    $poll->options()->delete(); //pr moi + simple pour etre sur que les nouvelles données sont bien celles mises à jour
+    $poll->options()->delete(); //pr moi: + simple pour etre sur que les nouvelles données sont bien celles mises à jour
     foreach ($validated['options'] as $optionData) {
         $option = new PollOption();
         $option->label = $optionData['label'];
@@ -131,5 +132,57 @@ class ApiPollController extends Controller
 
     return $poll->load('options');
 
+    }
+
+    public function vote(Request $request, Poll $poll)
+    {
+        $user = $request->user();
+
+        if(!$poll){
+            return response()->json(['message' => 'Sondage introuvable.'], 404);
+        }
+
+        if($poll->is_draft){
+            return response()->json(['message' => 'Ce sondage est un brouillon'], 400);
+        }
+
+        if ($poll->ends_at && now() > $poll->ends_at) {
+        return response()->json(['message' => 'Ce sondage est terminé.'], 400);
+        }
+
+        $selectedOptionIds = $request->input('option_ids', []);
+        if(empty($selectedOptionIds)){
+            return response()->json(['message' => 'Aucune option sélectionnée.'], 400);
+        }
+        //pluck pr extraire les ids des options du poll
+        $validOptionIds = $poll->options()->pluck('id')->toArray();
+        foreach ($selectedOptionIds as $optionId) {
+        if (!in_array($optionId, $validOptionIds)) {
+            return response()->json(['message' => 'Option invalide.'], 400);
+        }
+    }
+        $existingVote = PollVote::where('poll_id', $poll->id)
+        ->where('user_id', $user->id)
+        ->exists();
+        
+        if($existingVote && !$poll->allow_vote_change){
+            return response()->json(['message' => 'Changement de vote non autorisé.'], 400);
+        }
+
+        if ($existingVote) {
+        PollVote::where('poll_id', $poll->id)
+            ->where('user_id', $user->id)
+            ->delete();
+        }
+
+        foreach($selectedOptionIds as $optionId){
+            PollVote::create([
+                'poll_id' => $poll->id,
+            'user_id' => $user->id,
+            'poll_option_id' => $optionId,
+            ]);
+        }
+
+        return response()->json(['message' => 'Vote enregistré !'], 200);
     }
 }

@@ -33,7 +33,7 @@ const addOption = ()=>{
 const removeOption = (index) =>{
     const updated = [...props.options];
     updated.splice(index, 1);
-    emit('uptade:options', updated);
+    emit('update:options', updated);
 };
 
 const updateOptionLabel = (index, value) => {
