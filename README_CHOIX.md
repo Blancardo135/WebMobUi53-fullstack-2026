@@ -41,3 +41,18 @@ Puisque je ne peux pas avancer sur le reste de la structure de modification, j'e
 ### Implémentations backend
 En attendant le retour du prof sur mes questions front, j'en ai profité pour implémenter les questions backend qui concernent les choix multiples, les changements de votes etc..
 Pour ce faire, j'ai du ajouter une route "vote" que j'ai ensuite développer en fonction dans ApiPollController. Cela me permet d'enregistrer côté backend les aspects de votes multiples et de changement de votes.
+
+## Période d'avancée - 03.05.26
+### Implémentations frontend
+Modification de AppPollVote.vue pour qu'il délégue l'affichage à mon nouveau composant PollVote.vue. L'app gère le chargement et les erreurs. Ensuite, PollVote.vue récupère les données avec le props et les passes au voteStore qui les traite.
+
+Modification et refactorisation de PollEdit.vue pour qu'il soit plus propre qu'avant et qu'il ait bien avec PollForm.vue
+### Implémentations backend
+Ajout d'un apivotecontroller avec des variables fillable pour éviter un bug lors de la création. 
+
+
+
+## retour prof
+- avoir un store route.js
+- Utiliser un store pour les fonctions qui reviennent
+- Composant pollvote ok mais why not avoir un store uniquement

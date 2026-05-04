@@ -10,6 +10,13 @@ class PollVote extends Model
     /**
      * Get the poll that owns the vote.
      */
+
+    protected $fillable = [
+        'poll_id',
+        'user_id',
+        'poll_option_id',
+    ];
+    
     public function poll(): BelongsTo
     {
         return $this->belongsTo(Poll::class);

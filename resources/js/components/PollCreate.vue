@@ -5,6 +5,7 @@ import {useFetchApi} from '../composables/useFetchApi';
 
 const {fetchApi} = useFetchApi();
 
+//reflechir -> store avec une foncztion vide
 const title = ref('');
 const question = ref('');
 const options = ref([{ label: '' }, { label: '' }]);
@@ -56,7 +57,7 @@ loading.value = false;
     v-model:duration="duration"
     :loading="loading"
     :error="error"
-    submit-label="Créer le sondage"
+    submitLabel="Créer le sondage"
     @submit="createPoll"
   />
 </template>
