@@ -50,9 +50,17 @@ Modification et refactorisation de PollEdit.vue pour qu'il soit plus propre qu'a
 ### Implémentations backend
 Ajout d'un apivotecontroller avec des variables fillable pour éviter un bug lors de la création. 
 
+## Période d'avancée - 05.05.26
+### Implémentation frontend
+J'ai ensuite ajouté un btn sous forme de lien pour me permettre de naviguer vers la page du sondage.
+Exactement, tu as bien compris. Le flux complet :
 
+Côté frontend, j'ai créé un composant PollResults.vue qui affiche les résultats sous forme de barres de progression avec les pourcentages. Il utilise usePolling pour se rafraîchir automatiquement toutes les 3 secondes.
+Pour déclencher l'affichage des résultats après un vote, j'ai utilisé emit quand le vote est enregistré avec succès, PollVote émet un événement voted vers AppVotePage. Celui-ci met hasVoted à true, ce qui affiche PollResults via un v-if. Si les résultats sont publics, ils s'affichent directement sans avoir besoin de voter.
 
+### Implémentation backend
+J'ai modifié le fichier apipollcontro pour y ajouter une logique de conversion et vérification des dates et de la durée.
+
+Dans un second temps, j'ai implémenté une route pour accèder aux résultats des sondages.
 ## retour prof
-- avoir un store route.js
-- Utiliser un store pour les fonctions qui reviennent
 - Composant pollvote ok mais why not avoir un store uniquement

@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useFetchApi } from './composables/useFetchApi';
 import PollVote from './components/PollVote.vue';
+import PollResults from './components/PollResults.vue';
+import { voteStore } from './stores/voteStore';
 
 const props = defineProps({
     token: {type: String, required: true},
@@ -14,6 +16,14 @@ const {data: poll, error, loading} = fetchApiToRef({
     url: `/polls/${props.token}`,
 });
 
+//me permet de gérer les résultats
+// const {success} = voteStore(poll.value);
+const hasVoted = ref(false);
+
+const showResults = computed(()=>{
+  return poll.value?.results_public || success.value
+})
+
 </script>
 
 <template>
@@ -25,7 +35,10 @@ const {data: poll, error, loading} = fetchApiToRef({
       Sondage introuvable ou lien invalide.
     </div>
 
-    <PollVote v-else-if="poll" :poll="poll" />
+    <div v-else-if="poll">
+    <PollVote :poll="poll" />
+    <PollResults v-if="poll.results_public || hasVoted" :token="token" />
+    </div>
 
   </main>
 </template>

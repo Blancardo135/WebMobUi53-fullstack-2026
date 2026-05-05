@@ -24,7 +24,7 @@ export function voteStore(poll) {
         }
     };
 
-    const submitVote = async () => {
+    const submitVote = async (onSuccess) => {
         loading.value = true;
         error.value = null;
         try {
@@ -36,6 +36,8 @@ export function voteStore(poll) {
                 },
             });
             success.value = true;
+            //mon callback
+            if (onSuccess) onSuccess();
         } catch (err) {
             error.value = 'Erreur lors du vote'
             loading.value = false;

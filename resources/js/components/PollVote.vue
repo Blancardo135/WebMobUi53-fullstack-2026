@@ -1,5 +1,7 @@
 <script setup>
 import { voteStore } from '../stores/voteStore';
+//pr l'ajout des résultats
+const emit = defineEmits(['voted']);
 
 //récupère cela depuis AppVotePage qui lui s'occupe du fetch
 const props = defineProps({
@@ -11,6 +13,7 @@ const props = defineProps({
 
 //voteStore va gérer ce que je lui done
 const { selectedOptionIds, loading, error, success, changeOption, submitVote } = voteStore(props.poll)
+
 </script>
 
 <template>
@@ -50,7 +53,7 @@ const { selectedOptionIds, loading, error, success, changeOption, submitVote } =
       <p v-if="error" class="mt-3 text-sm text-red-500">{{ error }}</p>
 
       <button
-        @click="submitVote"
+        @click="submitVote(()=> emit('voted'))"
         :disabled="loading || selectedOptionIds.length === 0"
         class="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
       >

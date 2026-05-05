@@ -42,6 +42,7 @@ import PollEdit from './PollEdit.vue';
     // pr l'ui
     setTimeout(() => copied.value = null, 2000);
   }
+
 </script>
 
 <template>
@@ -121,6 +122,12 @@ import PollEdit from './PollEdit.vue';
                      transition-colors hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-40">
               {{ copied === poll.secret_token ? 'Copié !' : 'Copier le lien' }}
             </button>
+            <a :href="`/vote/${poll.secret_token}`"
+            target="_blank"
+            class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100"
+            >Voir le sondage</a>
+
+ 
           </td>
 
         </tr>
@@ -130,40 +137,3 @@ import PollEdit from './PollEdit.vue';
   </div>
   <PollEdit v-if="editingPoll" :poll="editingPoll" />
 </template>
-
-<!-- <template>
-  <p v-if="polls.length === 0">Aucun sondage.</p>
-
-  <table v-else class="w-full border-collapse text-left">
-    <thead>
-      <tr>
-        <th class="border px-3 py-2">ID</th>
-        <th class="border px-3 py-2">Titre</th>
-        <th class="border px-3 py-2">Question</th>
-        <th class="border px-3 py-2">Brouillon</th>
-        <th class="border px-3 py-2">Debut</th>
-        <th class="border px-3 py-2">Fin</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="poll in polls" :key="poll.id">
-        <td class="border px-3 py-2">{{ poll.id }}</td>
-        <td class="border px-3 py-2">{{ poll.title || '-' }}</td>
-        <td class="border px-3 py-2">{{ poll.question }}</td>
-        <td class="border px-3 py-2">{{ poll.is_draft ? 'Oui' : 'Non' }}</td>
-        <td class="border px-3 py-2">{{ poll.started_at || '-' }}</td>
-        <td class="border px-3 py-2">{{ poll.ends_at || '-' }}</td>
-        <td class="border px-3 py-2">
-          <button 
-            @click="deletePoll(poll.id)"
-            :disabled="loadingId === poll.id"
-            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50 text-sm"
-          >
-            {{ loadingId === poll.id ? 'Suppression en cours' : 'Supprimer' }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</template> -->

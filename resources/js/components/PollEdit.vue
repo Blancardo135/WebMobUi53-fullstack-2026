@@ -18,7 +18,7 @@ const isDraft = ref(props.poll.is_draft);
 const allowMultipleChoices = ref(props.poll.allow_multiple_choices);
 const allowVoteChange = ref(props.poll.allow_vote_change);
 const resultsPublic = ref(props.poll.results_public);
-const duration = ref(props.poll.duration);
+const duration = ref(props.poll.duration ? props.poll.duration / 86400 : null);
 
 const loading = ref(false);
 const error = ref(null);

@@ -51,7 +51,6 @@ class ApiPollController extends Controller
         'allow_vote_change'      => 'boolean',
         'results_public'         => 'boolean',
         'duration'               => 'nullable|integer|min:1',
-        'ends_at'                => 'nullable|date|after:now',
         'options'                => 'required|array|min:2',
         //pr appliquer a tt les labels, npo le *
         'options.*.label'        => 'required|string|max:255',
@@ -67,8 +66,9 @@ class ApiPollController extends Controller
     $poll->allow_multiple_choices = $validated['allow_multiple_choices'] ?? false;
     $poll->allow_vote_change = $validated['allow_vote_change'] ?? false;
     $poll->results_public = $validated['results_public'] ?? false;
-    $poll->duration = $validated['duration'] ?? null;
-    $poll->ends_at = $validated['ends_at'] ?? null;
+    $poll->duration = $validated['duration'] ? $validated['duration'] * 86400 : null;
+    $poll->ends_at = $poll->duration ? now()->addSeconds($poll->duration) : null;
+    $poll->started_at = $poll->is_draft ? null : now();
     $poll->user()->associate($user);
     $poll->save();
     
@@ -108,7 +108,6 @@ class ApiPollController extends Controller
         'allow_vote_change'      => 'boolean',
         'results_public'         => 'boolean',
         'duration'               => 'nullable|integer|min:1',
-        'ends_at'                => 'nullable|date|after:now',
         'options'                => 'required|array|min:2',
         'options.*.label'        => 'required|string|max:255',
     ]);
@@ -116,10 +115,13 @@ class ApiPollController extends Controller
     $poll->title = $validated['title'] ?? null;
     $poll->question = $validated['question'];
     $poll->is_draft = $validated['is_draft'] ?? $poll->is_draft;
+    if (!$poll->is_draft && !$poll->started_at) {
+    $poll->started_at = now();}
     $poll->allow_multiple_choices = $validated['allow_multiple_choices'] ?? $poll->allow_multiple_choices;
     $poll->allow_vote_change = $validated['allow_vote_change'] ?? $poll->allow_vote_change;
     $poll->results_public = $validated['results_public'] ?? $poll->results_public;
-    $poll->duration = $validated['duration'] ?? null;
+    $poll->duration = $validated['duration'] ? $validated['duration'] * 86400 : null;
+    $poll->ends_at = $poll->duration ? now()->addSeconds($poll->duration) : null;
     $poll->save();
 
     $poll->options()->delete(); //pr moi: + simple pour etre sur que les nouvelles données sont bien celles mises à jour
@@ -132,5 +134,32 @@ class ApiPollController extends Controller
 
     return $poll->load('options');
 
+    }
+
+    public function results(Request $request, string $token)
+    {
+        $poll = Poll::with(['options' => function ($query) {
+        $query->withCount('votes');
+        }])->where('secret_token', $token)->first();
+        
+        if (!$poll) {
+        return response()->json(['message' => 'Poll not found.'], 404);
+        }
+
+        if (!$poll->results_public && !$request->user()) {
+        return response()->json(['message' => 'Résultats non publics.'], 403);
+        }
+
+        $totalVotes = $poll->options->sum('votes_count');
+        
+        //me permet de retourner options et total des votes
+        return response()->json([
+            'options' => $poll->options->map(fn($option) => [
+            'id'          => $option->id,
+            'label'       => $option->label,
+            'votes_count' => $option->votes_count,
+            ]),
+            'total_votes' => $totalVotes,
+            ]);
     }
 }
