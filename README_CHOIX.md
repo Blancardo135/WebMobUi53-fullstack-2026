@@ -62,5 +62,10 @@ Pour déclencher l'affichage des résultats après un vote, j'ai utilisé emit q
 J'ai modifié le fichier apipollcontro pour y ajouter une logique de conversion et vérification des dates et de la durée.
 
 Dans un second temps, j'ai implémenté une route pour accèder aux résultats des sondages.
+
+## Période d'avancée - 09.05.26
+### Implémentation frontend
+Je répond au point 7 des critères, à savoir gestion de L'UI sur un sondage qui est dépassé par exemple. Pour ce faire, je vais utiliser un computed qui me permet de mettre à jour en fonction d'une valeur réactive. J'ai donc implémenté cela aussi dans ma template avec isExpired pour vérifier l'état.
+
 ## retour prof
 - Composant pollvote ok mais why not avoir un store uniquement

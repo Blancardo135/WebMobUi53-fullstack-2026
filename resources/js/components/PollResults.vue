@@ -29,6 +29,7 @@ const percentage = (votesCount)=>{
 }
 </script>
 
+
 <template>
   <div class="mt-8">
     <div class="mb-3">

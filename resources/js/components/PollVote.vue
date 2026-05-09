@@ -17,7 +17,6 @@ const { selectedOptionIds, loading, error, success, changeOption, submitVote } =
 </script>
 
 <template>
-
 <div>
     <div class="mb-6">
       <h1 class="text-2xl font-semibold text-gray-800">{{ poll.title}}</h1>
@@ -65,7 +64,3 @@ const { selectedOptionIds, loading, error, success, changeOption, submitVote } =
 </div>
 
 </template>
-
-<!-- //btn vote qui transmet les données au store avec éles aztrs nfonctions de gestion
-async func votre
-apivotecontroller -->

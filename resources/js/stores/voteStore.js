@@ -39,7 +39,7 @@ export function voteStore(poll) {
             //mon callback
             if (onSuccess) onSuccess();
         } catch (err) {
-            error.value = 'Erreur lors du vote'
+            error.value = err.data.message ?? 'Erreur lors du vote'
             loading.value = false;
         }
     };

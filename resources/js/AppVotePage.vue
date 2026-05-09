@@ -16,16 +16,15 @@ const {data: poll, error, loading} = fetchApiToRef({
     url: `/polls/${props.token}`,
 });
 
-//me permet de gérer les résultats
-// const {success} = voteStore(poll.value);
 const hasVoted = ref(false);
 
-const showResults = computed(()=>{
-  return poll.value?.results_public || success.value
-})
+
+const isExpired = computed(() => {
+  if (!poll.value?.ends_at) return false;
+  return new Date() > new Date(poll.value.ends_at);
+});
 
 </script>
-
 <template>
   <main class="min-h-screen p-6 max-w-2xl mx-auto">
 
@@ -35,10 +34,15 @@ const showResults = computed(()=>{
       Sondage introuvable ou lien invalide.
     </div>
 
+  
     <div v-else-if="poll">
-    <PollVote :poll="poll" />
-    <PollResults v-if="poll.results_public || hasVoted" :token="token" />
-    </div>
+      <div v-if="isExpired"
+       class="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700 mb-4">
+        Ce sondage est terminé — il n'est plus possible de voter.
+      </div>
 
+      <PollVote v-if="!isExpired" :poll="poll" @voted="hasVoted = true" />
+      <PollResults v-if="poll.results_public || hasVoted || isExpired" :token="token" />
+    </div>
   </main>
 </template>
