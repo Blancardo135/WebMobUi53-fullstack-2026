@@ -69,11 +69,24 @@ Je répond au point 7 des critères, à savoir gestion de L'UI sur un sondage qu
 
 ## Période d'avancée - 11.05.26
 ### Implémentation frontend
-
+BaseModal.vue créé — composant générique avec title, message, confirmLabel, confirmClass
+ConfirmModal remplacé par BaseModal dans PollTable
+PollCreate.vue — ajout de handleSubmit et onConfirmed pour intercepter la soumission si pas brouillon, affiche BaseModal d'avertissement avant de lancer
+PollEdit.vue — même logique que PollCreate avec handleSubmit et onConfirmed
+PollTable.vue — bouton Modifier grisé et désactivé si le sondage est lancé (!poll.is_draft)
+TheHeader.vue — ajout d'un lien de retour vers le dashboard depuis la page de vote
 ### Implémentation backend
+Backend — aujourd'hui
+
+Ajout de BaseModal comme composant générique via props
+Blocage de la modification d'un sondage lancé dans ApiPollController@update — vérification !$poll->is_draft avant toute modification
+Remise en place de started_at dans update quand un brouillon passe à lancé
+
 
 ## retour prof
 - Composant pollvote ok mais why not avoir un store uniquement
 - avoir une modale pour la version phone (informations, confirmation)
 - responsive ?
 - composant baseButton
+- ne pas forcément mettre create et edit dans un store mais être capable d'expliquer pq 
+- enlever le reload et mettre un const ref avec qqch qui gère
