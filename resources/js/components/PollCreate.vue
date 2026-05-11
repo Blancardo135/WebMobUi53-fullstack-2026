@@ -2,10 +2,11 @@
 import { ref } from 'vue';
 import PollForm from './PollForm.vue';
 import {useFetchApi} from '../composables/useFetchApi';
+import BaseModal from './BaseModal.vue';
 
 const {fetchApi} = useFetchApi();
 
-//reflechir -> store avec une foncztion vide
+//reflechir -> store avec une fonction vide
 const title = ref('');
 const question = ref('');
 const options = ref([{ label: '' }, { label: '' }]);
@@ -16,6 +17,7 @@ const resultsPublic = ref(false);
 const duration = ref(null);
 const loading = ref(false);
 const error = ref(null);
+const showWarning = ref(false);
 
 const createPoll = async()=>{
     loading.value = true;
@@ -36,16 +38,31 @@ const createPoll = async()=>{
       },
     });
     window.location.reload();
+    // idem polledit
 } catch(err) {
 error.value = 'Erreur de création';
 loading.value = false;
 }
 };
 
+//me permet de gérer la modale pr la soumission brouillon
+const handleSubmit = () => {
+  if (!isDraft.value) {
+    showWarning.value = true;
+  } else {
+    createPoll();
+  }
+};
+
+const onConfirmed = () => {
+  showWarning.value = false;
+  createPoll();
+};
+
 </script>
 
 <template>
-    <!-- ici v-model passe la valeur des ref parent à l'enfant et écoute l'émission de l'enfant pour mettre à jour la valeur ici -->
+
   <PollForm
     v-model:title="title"
     v-model:question="question"
@@ -58,6 +75,15 @@ loading.value = false;
     :loading="loading"
     :error="error"
     submitLabel="Créer le sondage"
-    @submit="createPoll"
+    @submit="handleSubmit"
+  />
+
+  <BaseModal
+    v-if="showWarning"
+    title="Lancer ce sondage ?"
+    message="Une fois lancé, ce sondage ne pourra plus être modifié ni repassé en brouillon."
+    confirmLabel="Lancer"
+    @confirm="onConfirmed"
+    @cancel="showWarning = false"
   />
 </template>

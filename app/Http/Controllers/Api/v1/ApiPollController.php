@@ -99,6 +99,10 @@ class ApiPollController extends Controller
         if ($poll->user_id !== $request->user()->id) {
         return response()->json(['message' => 'Non autorisé.'], 403);
     }
+    //vérif pr gérer la modale de brouillon/publié
+        if (!$poll->is_draft) {
+            return response()->json(['message' => 'Ce sondage est lancé et ne peut plus être modifié.'], 403);
+    }
 
     $validated = $request->validate([
         'title'                  => 'nullable|string|max:255',

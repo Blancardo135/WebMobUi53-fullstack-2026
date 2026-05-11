@@ -5,6 +5,7 @@ import PollVote from './components/PollVote.vue';
 import PollResults from './components/PollResults.vue';
 import { voteStore } from './stores/voteStore';
 
+
 const props = defineProps({
     token: {type: String, required: true},
     loginUrl: { type: String, default: null},
@@ -26,6 +27,18 @@ const isExpired = computed(() => {
 
 </script>
 <template>
+  
+  <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+    <nav>
+      <a 
+        href="/polls/dashboard"
+        class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100"
+      >
+        Retourner au dashboard
+      </a>
+    </nav>
+  </header>
+
   <main class="min-h-screen p-6 max-w-2xl mx-auto">
 
     <div v-if="loading" class="text-gray-400 text-sm">Chargement...</div>

@@ -67,5 +67,13 @@ Dans un second temps, j'ai implémenté une route pour accèder aux résultats d
 ### Implémentation frontend
 Je répond au point 7 des critères, à savoir gestion de L'UI sur un sondage qui est dépassé par exemple. Pour ce faire, je vais utiliser un computed qui me permet de mettre à jour en fonction d'une valeur réactive. J'ai donc implémenté cela aussi dans ma template avec isExpired pour vérifier l'état.
 
+## Période d'avancée - 11.05.26
+### Implémentation frontend
+
+### Implémentation backend
+
 ## retour prof
 - Composant pollvote ok mais why not avoir un store uniquement
+- avoir une modale pour la version phone (informations, confirmation)
+- responsive ?
+- composant baseButton
