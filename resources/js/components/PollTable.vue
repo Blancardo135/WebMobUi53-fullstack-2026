@@ -4,6 +4,7 @@ import { useFetchApi } from '../composables/useFetchApi';
 const copied = ref(null);
 import PollEdit from './PollEdit.vue';
 import BaseModal from './BaseModal.vue';
+import BaseButton from './BaseButton.vue';
 
   const props = defineProps({
     polls: { type: Array, default: () => [] },
@@ -95,20 +96,15 @@ import BaseModal from './BaseModal.vue';
             <td class="px-4 py-3 text-gray-500 text-xs">{{ poll.started_at ?? '—' }}</td>
             <td class="px-4 py-3 text-gray-500 text-xs">{{ poll.ends_at ?? '—' }}</td>
             <td class="px-4 py-3 flex gap-2 flex-wrap">
-              <button
-                @click="poll.is_draft ? editingPoll = poll : null"
-                :disabled="!poll.is_draft"
-                class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 transition-colors hover:bg-blue-100 disabled:opacity-40 disabled:cursor-not-allowed">
-                Modifier
-              </button>
-              <button @click="pollToDelete = poll.id" :disabled="loadingId === poll.id"
-                class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-40">
-                {{ loadingId === poll.id ? 'En cours de suppression' : 'Supprimer' }}
-              </button>
-              <button @click="copyLink(poll.secret_token)"
-                class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100">
+              <BaseButton variant="blue" @click="editingPoll = poll" :disabled="!poll.is_draft">
+              Modifier
+              </BaseButton>
+              <BaseButton variant="red" @click="pollToDelete = poll.id" :disabled="loadingId === poll.id">
+                {{ loadingId === poll.id ? 'En cours...' : 'Supprimer' }}
+              </BaseButton>
+              <BaseButton variant="gray" @click="copyLink(poll.secret_token)">
                 {{ copied === poll.secret_token ? 'Copié !' : 'Copier le lien' }}
-              </button>
+              </BaseButton>
               <a :href="`/vote/${poll.secret_token}`" target="_blank"
                 class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100">
                 Voir le sondage

@@ -90,3 +90,8 @@ Remise en place de started_at dans update quand un brouillon passe à lancé
 - composant baseButton
 - ne pas forcément mettre create et edit dans un store mais être capable d'expliquer pq 
 - enlever le reload et mettre un const ref avec qqch qui gère
+- dire dans le readme si lib externe
+- continuer implémentation boutons
+
+## Choix techniques
+slot plutot que label pour pouvoir avoir des conditions et des icones plutôt que juste un label de texte avec defineProps.
