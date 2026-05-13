@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import PollForm from './PollForm.vue';
 import {useFetchApi} from '../composables/useFetchApi';
 import BaseModal from './BaseModal.vue';
+import { useRoute } from '../stores/route.js';
+const {showPollsTable} = useRoute();
 
 const {fetchApi} = useFetchApi();
 
@@ -19,30 +21,29 @@ const loading = ref(false);
 const error = ref(null);
 const showWarning = ref(false);
 
-const createPoll = async()=>{
+const createPoll = async () => {
     loading.value = true;
     error.value = null;
-    try{
+    try {
         await fetchApi({
-        url:'/polls',
-        method:'POST',
-        data: {
-        title: title.value,
-        question: question.value,
-        options: options.value,
-        is_draft: isDraft.value,
-        allow_multiple_choices: allowMultipleChoices.value,
-        allow_vote_change: allowVoteChange.value,
-        results_public: resultsPublic.value,
-        duration: duration.value,
-      },
-    });
-    window.location.reload();
-    // idem polledit
-} catch(err) {
-error.value = 'Erreur de création';
-loading.value = false;
-}
+            url: '/polls',
+            method: 'POST',
+            data: {
+                title: title.value,
+                question: question.value,
+                options: options.value,
+                is_draft: isDraft.value,
+                allow_multiple_choices: allowMultipleChoices.value,
+                allow_vote_change: allowVoteChange.value,
+                results_public: resultsPublic.value,
+                duration: duration.value,
+            },
+        });
+        window.location.reload();
+    } catch (err) {
+        error.value = 'Erreur de création.';
+        loading.value = false;
+    }
 };
 
 //me permet de gérer la modale pr la soumission brouillon
@@ -83,6 +84,7 @@ const onConfirmed = () => {
     title="Lancer ce sondage ?"
     message="Une fois lancé, ce sondage ne pourra plus être modifié ni repassé en brouillon."
     confirmLabel="Lancer"
+    confirmVariant="blue"
     @confirm="onConfirmed"
     @cancel="showWarning = false"
   />

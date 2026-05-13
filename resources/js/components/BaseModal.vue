@@ -1,10 +1,11 @@
 <script setup>
+import BaseButton from './BaseButton.vue';
 defineProps({
   title: { type: String, required: true },
   message: { type: String, required: true },
   confirmLabel: { type: String, default: 'Confirmer' },
   cancelLabel: { type: String, default: 'Annuler' },
-  confirmClass: { type: String, default: 'rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700' },
+  confirmVariant: { type: String, default: 'red' },
 });
 
 defineEmits(['confirm', 'cancel']);
@@ -16,13 +17,12 @@ defineEmits(['confirm', 'cancel']);
       <h2 class="text-base font-semibold text-gray-900 mb-2">{{ title }}</h2>
       <p class="text-sm text-gray-500 mb-6">{{ message }}</p>
       <div class="flex gap-3 justify-end">
-        <button @click="$emit('cancel')"
-          class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100">
+        <BaseButton variant="gray" @click="$emit('cancel')">
           {{ cancelLabel }}
-        </button>
-        <button @click="$emit('confirm')" :class="confirmClass">
+        </BaseButton>
+        <BaseButton :variant="confirmVariant" @click="$emit('confirm')">
           {{ confirmLabel }}
-        </button>
+        </BaseButton>
       </div>
     </div>
   </div>

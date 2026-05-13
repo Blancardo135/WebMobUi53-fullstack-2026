@@ -1,4 +1,5 @@
 <script setup>
+import BaseButton from './BaseButton.vue';
 const props = defineProps({
   title: { type: String, default: '' },
   question: { type: String, default: '' },
@@ -84,15 +85,13 @@ const updateOptionLabel = (index, value) => {
         :placeholder="`Option ${index + 1}`"
         class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <button
-        v-if="options.length > 2"
-        @click="removeOption(index)"
-        class="text-red-400 hover:text-red-600 px-2 text-sm"
-      >Supprimer</button>
+      <BaseButton variant="red" v-if="options.length > 2" @click="removeOption(index)">
+        Supprimer
+      </BaseButton>
     </div>
-    <button @click="addOption" class="text-sm text-blue-600 hover:underline">
+    <BaseButton variant="gray" @click="addOption">
       Ajouter une option
-    </button>
+    </BaseButton>
   </div>
 
   <!-- parametres -->
@@ -140,13 +139,9 @@ const updateOptionLabel = (index, value) => {
   <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
 
   <!-- btn pr soumettre -->
-  <button
-    @click="emit('submit')"
-    :disabled="loading"
-    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-  >
+  <BaseButton variant="blue" @click="emit('submit')" :disabled="loading">
     {{ loading ? 'En cours...' : submitLabel }}
-  </button>
+  </BaseButton>
 
 </div>
 </template>
