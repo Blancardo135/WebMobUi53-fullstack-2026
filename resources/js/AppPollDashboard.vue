@@ -5,6 +5,7 @@
   import { useFetchApi } from './composables/useFetchApi';
   import { usePolling } from './composables/usePolling';
   import BaseButton from './components/BaseButton.vue';
+  import { useRoute } from './stores/route.js';
 
   const props = defineProps({
     polls: { type: Array, default: () => [] },
@@ -15,9 +16,10 @@
 
   const { fetchApiToRef } = useFetchApi();
 
+  const { currentView, showCreateForm, showPollsTable } = useRoute();
   const { data: getResult, error: getError, fetchNow } = fetchApiToRef({ url: 'polls/' });
   const { data: postResult, error: postError } = fetchApiToRef({ url: '/foo', data: { id: 1 } });
-watch(getResult, (val) => console.log(val));
+
 
   function handleError(err) {
     if (!err) return;
@@ -37,12 +39,15 @@ watch(getResult, (val) => console.log(val));
 <template>
   <main class="min-h-screen p-6">
     <h1 class="mb-4 text-xl font-semibold">Mes sondages</h1>
-    <BaseButton variant="blue" @click="showCreationForm = !showCreationForm">
-      {{ showCreationForm ? 'Annuler' : 'Nouveau sondage' }}
+    <BaseButton
+      variant="blue"
+      class="mb-4" 
+      @click="currentView === 'create' ? showPollsTable() : showCreateForm()">
+      {{ currentView === 'create' ? 'Annuler' : 'Nouveau sondage' }}
     </BaseButton>
 
-  <PollCreate v-if="showCreationForm"></PollCreate>
-  <PollTable v-else :polls="getResult ?? props.polls" />
+  <PollCreate v-if="currentView === 'create'" :fetchNow="fetchNow" />
+  <PollTable v-else :polls="getResult ?? props.polls" :fetchNow="fetchNow" />
   </main>
 </template>
 

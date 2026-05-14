@@ -27,7 +27,7 @@ class ApiPollController extends Controller
     /**
      * Display the specified poll by its secret token.
      */
-    public function show(string $token)
+    public function show(Request $request, string $token)
     {
         // Auth::loginUsingId(1);
         $poll = Poll::with(['options' => function ($query) {
@@ -37,6 +37,9 @@ class ApiPollController extends Controller
         if (!$poll) {
             return response()->json(['message' => 'Poll not found.'], 404);
         }
+
+        //pr gérer le cas où je suis le créateur mais résultats nn public
+        $poll->is_owner = $request->user() && $request->user()->id === $poll->user_id;
 
         return $poll;
     }
@@ -150,9 +153,14 @@ class ApiPollController extends Controller
         return response()->json(['message' => 'Poll not found.'], 404);
         }
 
-        if (!$poll->results_public && !$request->user()) {
-        return response()->json(['message' => 'Résultats non publics.'], 403);
+        if (!$poll->results_public) {
+            if (!$request->user()) {
+                return response()->json(['message' => 'Résultats non publics.'], 403);
+                }   
+        if ($request->user()->id !== $poll->user_id) {
+            return response()->json(['message' => 'Résultats non publics.'], 403);
         }
+}
 
         $totalVotes = $poll->options->sum('votes_count');
         

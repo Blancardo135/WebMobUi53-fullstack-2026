@@ -21,11 +21,39 @@ const loading = ref(false);
 const error = ref(null);
 const showWarning = ref(false);
 
+const props = defineProps({
+  fetchNow: { type: Function, default: null },
+});
+
+// const createPoll = async () => {
+//     loading.value = true;
+//     error.value = null;
+//     try {
+//         await fetchApi({
+//             url: '/polls',
+//             method: 'POST',
+//             data: {
+//                 title: title.value,
+//                 question: question.value,
+//                 options: options.value,
+//                 is_draft: isDraft.value,
+//                 allow_multiple_choices: allowMultipleChoices.value,
+//                 allow_vote_change: allowVoteChange.value,
+//                 results_public: resultsPublic.value,
+//                 duration: duration.value,
+//             },
+//         });
+//         window.location.reload();
+//     } catch (err) {
+//         error.value = 'Erreur de création.';
+//         loading.value = false;
+//     }
+// };
 const createPoll = async () => {
     loading.value = true;
     error.value = null;
     try {
-        await fetchApi({
+       const res = await fetchApi({
             url: '/polls',
             method: 'POST',
             data: {
@@ -39,7 +67,12 @@ const createPoll = async () => {
                 duration: duration.value,
             },
         });
-        window.location.reload();
+        if(res){
+          props.fetchNow();
+          showPollsTable();
+        }else{
+          error.value= 'Erreur inattendue.'
+        }
     } catch (err) {
         error.value = 'Erreur de création.';
         loading.value = false;

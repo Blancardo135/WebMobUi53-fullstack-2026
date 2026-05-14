@@ -3,7 +3,6 @@ import { ref, computed } from 'vue';
 import { useFetchApi } from './composables/useFetchApi';
 import PollVote from './components/PollVote.vue';
 import PollResults from './components/PollResults.vue';
-import { voteStore } from './stores/voteStore';
 
 
 const props = defineProps({
@@ -55,7 +54,7 @@ const isExpired = computed(() => {
       </div>
 
       <PollVote v-if="!isExpired" :poll="poll" @voted="hasVoted = true" />
-      <PollResults v-if="poll.results_public || hasVoted || isExpired" :token="token" />
+      <PollResults v-if="poll.results_public || hasVoted || isExpired || poll.is_owner" :token="token" />
     </div>
   </main>
 </template>
