@@ -1,5 +1,6 @@
 <script setup>
 import { voteStore } from '../stores/voteStore';
+import BaseButton from './BaseButton.vue';
 //pr l'ajout des résultats
 const emit = defineEmits(['voted']);
 
@@ -51,13 +52,14 @@ const { selectedOptionIds, loading, error, success, changeOption, submitVote } =
 
       <p v-if="error" class="mt-3 text-sm text-red-500">{{ error }}</p>
 
-      <button
-        @click="submitVote(()=> emit('voted'))"
-        :disabled="loading || selectedOptionIds.length === 0"
-        class="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-      >
-        {{ loading ? 'En cours...' : 'Voter' }}
-      </button>
+      <BaseButton
+          variant="blue"
+          @click="submitVote(() => emit('voted'))"
+          :disabled="loading || selectedOptionIds.length === 0"
+          class="mt-4 w-full"
+        >
+          {{ loading ? 'En cours...' : 'Voter' }}
+      </BaseButton>
 
     
 </div>

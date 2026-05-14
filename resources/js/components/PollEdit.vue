@@ -57,8 +57,6 @@ try{
         },
 
     });
-    console.log('res', res);
-    console.log('fetchNow', props.fetchNow);
     if(res){
       if (fnFetchNow) fnFetchNow(); //sinon le chargement ne fonctionnait pas
        loading.value = false;

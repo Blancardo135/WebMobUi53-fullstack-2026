@@ -17,8 +17,6 @@ class ApiPollController extends Controller
      */
     public function index(Request $request)
     {
-        // Auth::loginUsingId(1);
-        // $polls = $request->user()->polls()->orderBy('created_at', 'desc')->get();
         $polls = $request->user()->polls()->with('options')->orderBy('created_at', 'desc')->get();
 
         return $polls;
@@ -29,7 +27,7 @@ class ApiPollController extends Controller
      */
     public function show(Request $request, string $token)
     {
-        // Auth::loginUsingId(1);
+        
         $poll = Poll::with(['options' => function ($query) {
             $query->withCount('votes');
         }])->where('secret_token', $token)->first();
@@ -83,9 +81,9 @@ class ApiPollController extends Controller
         $option->poll()->associate($poll);
         $option->save();
     }
-    //pr que vue aille les réponses
-    return $poll->load('options');
-}
+    
+    return response()->json($poll->load('options'), 201);
+    }
 
     public function destroy(Request $request, Poll $poll)
         {
@@ -139,7 +137,7 @@ class ApiPollController extends Controller
         $option->save();
     }
 
-    return $poll->load('options');
+    return response()->json($poll->load('options'));
 
     }
 

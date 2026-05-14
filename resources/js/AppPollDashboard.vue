@@ -12,8 +12,6 @@
     loginUrl: { type: String, default: null },
   });
 
-  const showCreationForm = ref(false);
-
   const { fetchApiToRef } = useFetchApi();
 
   const { currentView, showCreateForm, showPollsTable } = useRoute();
