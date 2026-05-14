@@ -8,6 +8,7 @@ const {showPollsTable} = useRoute();
 
 
 const {fetchApi} = useFetchApi();
+//recoit en props depuis PollTable et initialise les ref.
 const props = defineProps({
     poll: {
         type: Object,
