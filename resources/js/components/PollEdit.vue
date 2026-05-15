@@ -4,23 +4,23 @@ import { useFetchApi } from '../composables/useFetchApi';
 import PollForm from './PollForm.vue';
 import BaseModal from './BaseModal.vue';
 import { useRoute } from '../stores/route';
-const {showPollsTable} = useRoute();
+const { showPollsTable } = useRoute();
 
 
-const {fetchApi} = useFetchApi();
-//recoit en props depuis PollTable et initialise les ref.
+const { fetchApi } = useFetchApi();
+//recoit en props depuis PollTable et initialise les ref
 const props = defineProps({
-    poll: {
-        type: Object,
-        required : true
-    },
-    fetchNow: {
-      type: Function,
-      default: null
-    }
+  poll: {
+    type: Object,
+    required: true
+  },
+  fetchNow: {
+    type: Function,
+    default: null
+  }
 })
 
-//c'est le seul moyen que j'ai trouvé pour m'assurer que ça fonctionne bien, en déstructurant.
+//c'est le seul moyen que j'ai trouvé pour m'assurer que ça fonctionne bien, en évitant que ce soit null au moment de la verif.
 const fnFetchNow = props.fetchNow;
 
 //conversion des booleans puisque je veux true false et pas 0 ou 1
@@ -37,41 +37,41 @@ const showWarning = ref(false);
 const loading = ref(false);
 const error = ref(null);
 
-const editPoll = async()=>{
-loading.value = true;
-error.value = null;
+const editPoll = async () => {
+  loading.value = true;
+  error.value = null;
 
-try{
+  try {
 
     const res = await fetchApi({
-        url: `/polls/${props.poll.id}`,
-        method: 'PUT',
-        data:{
-            question: question.value,
-            options: options.value,
-            is_draft: isDraft.value,
-            allow_multiple_choices: allowMultipleChoices.value,
-            allow_vote_change: allowVoteChange.value,
-            results_public: resultsPublic.value,
-            duration: duration.value,
-            title: title.value,
-        },
+      url: `/polls/${props.poll.id}`,
+      method: 'PUT',
+      data: {
+        question: question.value,
+        options: options.value,
+        is_draft: isDraft.value,
+        allow_multiple_choices: allowMultipleChoices.value,
+        allow_vote_change: allowVoteChange.value,
+        results_public: resultsPublic.value,
+        duration: duration.value,
+        title: title.value,
+      },
 
     });
-    if(res){
+    if (res) {
       if (fnFetchNow) fnFetchNow(); //sinon le chargement ne fonctionnait pas, me permet d'éviter window.location.reload
-       loading.value = false;
+      loading.value = false;
       showPollsTable();
     }
-    } catch (err) {
-      // 422 pr check erreur de validation
-      if (err.status === 422) {
-        error.value = 'Veuillez remplir tous les champs obligatoires (titre, question et options).';
-      } else {
-        error.value = err.data?.message ?? 'Erreur lors de la modification.';
-      }
-      loading.value = false;
+  } catch (err) {
+    // 422 pr check erreur de validation
+    if (err.status === 422) {
+      error.value = 'Veuillez remplir tous les champs obligatoires (titre, question et options).';
+    } else {
+      error.value = err.data?.message ?? 'Erreur lors de la modification.';
     }
+    loading.value = false;
+  }
 }
 //me permet de gérer la modale pr la soumission brouillon
 const handleSubmit = () => {
@@ -89,28 +89,12 @@ const onConfirmed = () => {
 </script>
 
 <template>
-<PollForm
-    v-model:title="title"
-    v-model:question="question"
-    v-model:options="options"
-    v-model:isDraft="isDraft"
-    v-model:allowMultipleChoices="allowMultipleChoices"
-    v-model:allowVoteChange="allowVoteChange"
-    v-model:resultsPublic="resultsPublic"
-    v-model:duration="duration"
-    :loading="loading"
-    :error="error"
-    submitLabel="Modifier le sondage"
-    @submit="handleSubmit"
-  />
+  <PollForm v-model:title="title" v-model:question="question" v-model:options="options" v-model:isDraft="isDraft"
+    v-model:allowMultipleChoices="allowMultipleChoices" v-model:allowVoteChange="allowVoteChange"
+    v-model:resultsPublic="resultsPublic" v-model:duration="duration" :loading="loading" :error="error"
+    submitLabel="Modifier le sondage" @submit="handleSubmit" />
 
-  <BaseModal
-    v-if="showWarning"
-    title="Lancer ce sondage ?"
-    message="Une fois lancé, ce sondage ne pourra plus être modifié ni repassé en brouillon."
-    confirmLabel="Lancer"
-    confirmVariant="blue"
-    @confirm="onConfirmed"
-    @cancel="showWarning = false"
-  />
+  <BaseModal v-if="showWarning" title="Lancer ce sondage ?"
+    message="Une fois lancé, ce sondage ne pourra plus être modifié ni repassé en brouillon." confirmLabel="Lancer"
+    confirmVariant="blue" @confirm="onConfirmed" @cancel="showWarning = false" />
 </template>

@@ -14,10 +14,10 @@ import { useRoute } from '../stores/route.js';
   });
 
   const { currentView, editingPoll, showEditForm, showPollsTable } = useRoute();
+  const { fetchApi } = useFetchApi();
 
   const pollToDelete = ref(null);
 
-  const { fetchApi } = useFetchApi();
   //loadingId me permet de suivre l'ID du sondage supprimé.
   const loadingId = ref(null);
 
