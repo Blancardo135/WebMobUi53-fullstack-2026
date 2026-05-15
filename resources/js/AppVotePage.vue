@@ -18,7 +18,7 @@ const {data: poll, error, loading} = fetchApiToRef({
 
 const hasVoted = ref(false);
 
-
+//puisque isExpired est un boolean, on retourne t ou f 
 const isExpired = computed(() => {
   if (!poll.value?.ends_at) return false;
   return new Date() > new Date(poll.value.ends_at);
@@ -38,12 +38,12 @@ const isExpired = computed(() => {
     </nav>
   </header>
 
-  <main class="min-h-screen p-6 max-w-2xl mx-auto">
+  <main class="min-h-screen px-4 py-6 max-w-2xl mx-auto">
 
     <div v-if="loading" class="text-gray-400 text-sm">Chargement...</div>
 
     <div v-else-if="error" class="text-red-500 text-sm">
-      Sondage introuvable ou lien invalide.
+      {{ error.status === 404 ? 'Sondage introuvable ou lien invalide.' : 'Vous n\'avez pas accès à ce sondage.' }}
     </div>
 
   
@@ -54,7 +54,12 @@ const isExpired = computed(() => {
       </div>
 
       <PollVote v-if="!isExpired" :poll="poll" @voted="hasVoted = true" />
-      <PollResults v-if="poll.results_public || hasVoted || isExpired || poll.is_owner" :token="token" />
+      <!-- me permet de bien afficher les résultats dans des cas précis -->
+      <PollResults v-if="(poll.results_public || poll.is_owner) && (hasVoted || isExpired || poll.is_owner)" :token="token" />
+      <div v-else-if="hasVoted && !poll.results_public && !poll.is_owner"
+      class="mt-8 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-500" >
+        Votre vote a été enregistré. Les résultats sont privés.
+      </div>
     </div>
   </main>
 </template>

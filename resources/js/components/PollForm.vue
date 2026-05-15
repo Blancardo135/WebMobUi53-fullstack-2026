@@ -48,7 +48,7 @@ const updateOptionLabel = (index, value) => {
 </script>
 
 <template>
-<div class="max-w-lg space-y-4">
+<div class="max-w-lg space-y-4 w-full px-2">
 
   <!-- titre -->
   <div>

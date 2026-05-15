@@ -42,7 +42,7 @@ loading.value = true;
 error.value = null;
 
 try{
-    // const res = await.. 
+
     const res = await fetchApi({
         url: `/polls/${props.poll.id}`,
         method: 'PUT',
@@ -59,18 +59,19 @@ try{
 
     });
     if(res){
-      if (fnFetchNow) fnFetchNow(); //sinon le chargement ne fonctionnait pas
+      if (fnFetchNow) fnFetchNow(); //sinon le chargement ne fonctionnait pas, me permet d'éviter window.location.reload
        loading.value = false;
       showPollsTable();
     }
-    //window.location.reload();
-    // verif success ou pas et donc modifier si succes
-    //mettre ensuite navigateTo(dashboard) si succes et sinon dire erreur
-}catch (err){
-  console.log('erreur catch', err);
-    error.value = 'Erreur lors de la modif';
-    loading.value = false;
-}
+    } catch (err) {
+      // 422 pr check erreur de validation
+      if (err.status === 422) {
+        error.value = 'Veuillez remplir tous les champs obligatoires (titre, question et options).';
+      } else {
+        error.value = err.data?.message ?? 'Erreur lors de la modification.';
+      }
+      loading.value = false;
+    }
 }
 //me permet de gérer la modale pr la soumission brouillon
 const handleSubmit = () => {

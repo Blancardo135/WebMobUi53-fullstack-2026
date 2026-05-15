@@ -16,7 +16,7 @@
 
   const { currentView, showCreateForm, showPollsTable } = useRoute();
   const { data: getResult, error: getError, fetchNow } = fetchApiToRef({ url: 'polls/' });
-  const { data: postResult, error: postError } = fetchApiToRef({ url: '/foo', data: { id: 1 } });
+  // const { data: postResult, error: postError } = fetchApiToRef({ url: '/foo', data: { id: 1 } });
 
 
   function handleError(err) {
@@ -29,7 +29,7 @@
   }
 
   watch(getError, err => handleError(err));
-  watch(postError, handleError);
+  // watch(postError, handleError);
 
   usePolling(fetchNow);
 </script>
@@ -46,6 +46,7 @@
 
   <PollCreate v-if="currentView === 'create'" :fetchNow="fetchNow" />
   <PollTable v-else :polls="getResult ?? props.polls" :fetchNow="fetchNow" />
+  <!-- getResult est la liste de sondage, qui met le ref "data" à jour -->
   </main>
 </template>
 

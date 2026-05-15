@@ -44,14 +44,20 @@ const createPoll = async () => {
             },
         });
         if(res){
+          loading.value = false;
           props.fetchNow();
           showPollsTable();
         }else{
           error.value= 'Erreur inattendue.'
         }
     } catch (err) {
-        error.value = 'Erreur de création.';
-        loading.value = false;
+      if (err.status === 422) {
+        // le 422 me permet de check si erreur validation ou serveur
+        error.value = 'Veuillez remplir tous les champs obligatoires (titre, question et options).';
+      } else {
+        error.value = err.data?.message ?? 'Erreur de création.';
+      }
+      loading.value = false;
     }
 };
 

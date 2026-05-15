@@ -34,12 +34,13 @@ import { useRoute } from '../stores/route.js';
         showPollsTable();
     
   } catch (err) {
-    alert('Erreur: Impossible de supprimer ce sondage.');
+    console.log('erreur catch', err);
     loadingId.value = null;
   } finally {
     pollToDelete.value = null;
   }
 };
+
   
   //ma fonction pr le lien
   const copyLink = (secretToken) =>{
