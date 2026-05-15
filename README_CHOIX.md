@@ -30,5 +30,8 @@ J'ai choisi une architecture multi-app, avec deux applications distinctes, mont�
 | POST | `/api/v1/polls/{poll}/vote` | Oui | Voter |
 | GET | `/api/v1/polls/{token}/results` | Non | Résultats (publics ou propriétaire) |
 
+## Utilisation de l'intelligence artificielle
+L'IA a été utilisée dans ce projet, notamment Claude Opus 4.7 et Claude Haiku 4.5 (via le mode ask). Cela m'a été utile pour gagner du temps sur des parties chronophages et pour faire de la gouvernance afin de s'assûrer qu'il n'y ait pas d'oubli.
+
 ### Bonus
 J'ai implémenté cela côté backend avec allow_vote_change dans ApiVoteController en autorisant le changement de vote lors de la création ou modification d'un sondage.
