@@ -23,6 +23,6 @@ export function useRoute() {
 }
 
 /*me permet de mieux gérer mon routing et d'éviter le window.location.reload() que
-j'avais avant. C'est le routing comme on a vu en cour. J'aurai pu utiliser une fonction navigateTo en
+j'avais avant. J'aurai pu utiliser une fonction navigateTo en
 passant juste des paramètres view et poll, mais c'est + lisible pour moi.
 Inconvénient ici, je dois rajouter chaque nouvelle vue manuellement. */

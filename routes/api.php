@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\v1\ApiPostController;
-use App\Http\Controllers\Api\v1\ApiFooController;
 use App\Http\Controllers\Api\v1\ApiPollController;
 use App\Http\Controllers\Api\v1\ApiVoteController;
 use Illuminate\Http\Request;

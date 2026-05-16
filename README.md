@@ -79,13 +79,30 @@ Mot de passe : password
 ## Architecture frontend
 J'ai choisi une architecture multi-app, avec deux applications distinctes, montées sur deux pages Blade séparées plutôt qu'une SPA unique. J'ai fais ce choix pour me faciliter la tâche et afin de pouvoir gérer séparement mon dashboard et mes votes. Cela facilite notamment l'accès, qui est parfois permis sans authentification sur les pages de votes.
 
+## Fonctionnalités implémentées
+Toutes les fonctionnalités demandées selon les critères disponibles à l'adresse suivante : https://github.com/Chabloz/WebMobUi52/blob/main/ex/Fullstack_Project.md ont été implémentées.
+
 ## Choix techniques
 - Navigation gérée par un store (route.js)
-- Isolation de la logique de vote dans un store (voteStore.js) pour faciliter la réutilisation
-- Utilisation d'emit + v-model dans PollForm.vue
-    -> PollCreate et PollEdit partagent le même formulaire via PollForm.vue. La communication parent->enfant se fait via props et l'enfant remonte les changements via emit('update:...'), qui permet l'usage du v-model côté parent. Cela me permet d'éviter de la duplication.
-- BaseButton.vue et BaseModal.vue sont deux composants réutilisés à plusieurs endroits dans l'application. Leur implémentation me donne une base réutilisable pour le reste.
 
+- Isolation de la logique de vote dans un store (vote.js) pour faciliter la réutilisation
+
+- Utilisation d'emit + v-model dans PollForm.vue
+    -> PollCreate et PollEdit partagent le même formulaire via PollForm.vue. La communication parent->enfant se fait via props et l'enfant remonte les changements via emit('update:...').
+
+- Polling uniquement sur la page de vote
+    -> usePolling est utilisé dans PollResults pour rafraîchir les résultats toutes les 3 secondes.
+
+- Accès aux résultats conditionnel
+    -> Les résultats sont accessibles si results_public est vrai, ou si l'utilisateur est le créateur du sondage.
+
+- Unicité du vote
+    -> Côté frontend, changeOption() dans voteStore remplace la sélection si allow_multiple_choices est false. Côté backend, ApiVoteController vérifie l'existence d'un vote existant avant d'insérer et rejette si allow_vote_change est false.
+
+- Timezone
+    -> APP_TIMEZONE est réglé sur Europe/Zurich dans config/app.php. 
+    Les dates (started_at, ends_at) sont calculées entièrement côté serveur via now()->addSeconds($duration)
+    
 ## Endpoints API
 | Méthode | Route | Auth | Description |
 |---|---|---|---|
@@ -96,9 +113,6 @@ J'ai choisi une architecture multi-app, avec deux applications distinctes, mont�
 | GET | `/api/v1/polls/{token}` | Non | Afficher par token |
 | POST | `/api/v1/polls/{poll}/vote` | Oui | Voter |
 | GET | `/api/v1/polls/{token}/results` | Non | Résultats (publics ou propriétaire) |
-
-## Utilisation de l'intelligence artificielle
-L'IA a été utilisée dans ce projet, notamment Claude Opus 4.7 et Claude Haiku 4.5 (via le mode ask). Cela m'a été utile pour gagner du temps sur des parties chronophages et pour faire de la gouvernance afin de s'assûrer qu'il n'y ait pas d'oubli.
 
 ### Bonus
 J'ai implémenté cela côté backend avec allow_vote_change dans ApiVoteController en autorisant le changement de vote lors de la création ou modification d'un sondage.

@@ -4,8 +4,9 @@ import PollForm from './PollForm.vue';
 import { useFetchApi } from '../composables/useFetchApi';
 import BaseModal from './BaseModal.vue';
 import { useRoute } from '../stores/route.js';
-const { showPollsTable } = useRoute();
 
+
+const { showPollsTable } = useRoute();
 const { fetchApi } = useFetchApi();
 
 const props = defineProps({

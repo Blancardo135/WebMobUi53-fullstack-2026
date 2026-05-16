@@ -1,31 +1,31 @@
 <script setup>
 import { computed } from 'vue';
 import { useFetchApi } from '../composables/useFetchApi';
-import {usePolling} from '../composables/usePolling';
-import { voteStore } from '../stores/voteStore';
+import { usePolling } from '../composables/usePolling';
+import { voteStore } from '../stores/vote';
 
 //le token vient de AppVote
 const props = defineProps({
-    token:{
-        type: String,
-        required: true
-    },
+  token: {
+    type: String,
+    required: true
+  },
 });
 
-const {fetchApiToRef} = useFetchApi();
-const {data: results, loading, error, fetchNow} = fetchApiToRef({
-    url:`/polls/${props.token}/results`,
+const { fetchApiToRef } = useFetchApi();
+const { data: results, loading, error, fetchNow } = fetchApiToRef({
+  url: `/polls/${props.token}/results`,
 });
 
 usePolling(fetchNow, 3000);
 
-//computed me permet de recalculer lorsque ça change
-const options = computed(()=> results.value?.options ?? []);
-const totalVotes = computed(()=> results.value?.total_votes ?? 0);
+//computed me permet de recalculer lorsque ça change et ça impact l'affichage
+const options = computed(() => results.value?.options ?? []);
+const totalVotes = computed(() => results.value?.total_votes ?? 0);
 
-const percentage = (votesCount)=>{
-    if(totalVotes.value === 0) return 0;
-    return Math.round((votesCount/totalVotes.value)*100);
+const percentage = (votesCount) => {
+  if (totalVotes.value === 0) return 0;
+  return Math.round((votesCount / totalVotes.value) * 100);
 }
 </script>
 
@@ -46,10 +46,8 @@ const percentage = (votesCount)=>{
           <span class="text-gray-500">{{ option.votes_count }} ({{ percentage(option.votes_count) }}%)</span>
         </div>
         <div class="w-full bg-gray-100 rounded-full h-2.5">
-          <div
-            class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
-            :style="{ width: `${percentage(option.votes_count)}%` }"
-          ></div>
+          <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+            :style="{ width: `${percentage(option.votes_count)}%` }"></div>
         </div>
       </div>
     </div>

@@ -58,6 +58,7 @@ const editPoll = async () => {
       },
 
     });
+    // me permet de pallier au window.location.reload() que j'avais utilisé au début, c'est la solution qui me parait la plus effiace même si double vérif
     if (res) {
       if (fnFetchNow) fnFetchNow(); //sinon le chargement ne fonctionnait pas, me permet d'éviter window.location.reload
       loading.value = false;

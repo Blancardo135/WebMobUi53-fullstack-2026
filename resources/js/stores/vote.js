@@ -36,7 +36,8 @@ export function voteStore(poll) {
                 },
             });
             success.value = true;
-            //mon callback
+            //mon callback qui est emit('voted) pr faire 
+            //remonter l'info vers appvotepage et ensuite pollresult
             if (onSuccess) onSuccess();
         } catch (err) {
             error.value = err.status === 401

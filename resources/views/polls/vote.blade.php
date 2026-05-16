@@ -1,6 +1,6 @@
 <x-vue-app-layout>
     <x-slot:scripts>
-        @vite(['resources/js/vote.js'])
+        @vite(['resources/js/poll-vote.js'])
     </x-slot>
 
     <x-slot:title>

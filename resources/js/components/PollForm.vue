@@ -128,3 +128,6 @@ const updateOptionLabel = (index, value) => {
 
   </div>
 </template>
+
+<!-- note pour moi meme : 
+ amélioration possible -> avoir un composant BaseInput à réutiliser ici avec label, value et placeholder -->
