@@ -32,24 +32,30 @@ const percentage = (votesCount) => {
 
 <template>
   <div class="mt-8">
-    <div class="mb-3">
-      <span class="text-xs uppercase tracking-wide font-medium text-gray-400">Résultats</span>
-      <span class="ml-2 text-xs text-gray-400">{{ totalVotes }} vote{{ totalVotes > 1 ? 's' : '' }}</span>
+
+    <div v-if="error" class="rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-500">
+      {{ error.status === 403 ? 'Les résultats sont privés.' : 'Erreur lors du chargement des résultats.' }}
     </div>
 
-    <div v-if="loading && !results" class="text-sm text-gray-400">Chargement...</div>
-
-    <div v-else class="space-y-3">
-      <div v-for="option in options" :key="option.id">
-        <div class="flex justify-between text-sm mb-1">
-          <span class="text-gray-700">{{ option.label }}</span>
-          <span class="text-gray-500">{{ option.votes_count }} ({{ percentage(option.votes_count) }}%)</span>
-        </div>
-        <div class="w-full bg-gray-100 rounded-full h-2.5">
-          <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
-            :style="{ width: `${percentage(option.votes_count)}%` }"></div>
+    <div v-if="!error">
+      <div class="mb-3">
+        <span class="text-xs uppercase tracking-wide font-medium text-gray-400">Résultats</span>
+        <span class="ml-2 text-xs text-gray-400">{{ totalVotes }} vote{{ totalVotes > 1 ? 's' : '' }}</span>
+      </div>
+      <div v-if="loading && !results" class="text-sm text-gray-400">Chargement...</div>
+      <div v-else class="space-y-3">
+        <div v-for="option in options" :key="option.id">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-gray-700">{{ option.label }}</span>
+            <span class="text-gray-500">{{ option.votes_count }} ({{ percentage(option.votes_count) }}%)</span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2.5">
+            <div class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+              :style="{ width: `${percentage(option.votes_count)}%` }"></div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
