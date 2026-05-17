@@ -94,7 +94,7 @@ Toutes les fonctionnalités demandées selon les critères disponibles à l'adre
     -> usePolling est utilisé dans PollResults pour rafraîchir les résultats toutes les 3 secondes.
 
 - Accès aux résultats conditionnel
-    -> Les résultats sont accessibles si results_public est vrai, ou si l'utilisateur est le créateur du sondage. Ils sont également accessibles une fois que le sondage est expiré.
+    -> Les résultats sont accessibles si results_public est vrai, ou si l'utilisateur est le créateur du sondage.
 
 - Unicité du vote
     -> Côté frontend, changeOption() dans voteStore remplace la sélection si allow_multiple_choices est false. Côté backend, ApiVoteController vérifie l'existence d'un vote existant avant d'insérer et rejette si allow_vote_change est false.
