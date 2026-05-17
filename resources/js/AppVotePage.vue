@@ -53,8 +53,11 @@ const isExpired = computed(() => {
 
       <PollVote v-if="!isExpired" :poll="poll" @voted="hasVoted = true" />
       <!-- me permet de bien afficher les résultats dans des cas précis -->
-      <PollResults v-if="poll.results_public || poll.is_owner || hasVoted || isExpired" :token="token" />
-      <!-- logique d'erreur que je gère dans Result avec le 403 -->
+      <PollResults v-if="poll.results_public || poll.is_owner || isExpired" :token="token" />
+      <div v-else-if="hasVoted && !poll.results_public && !poll.is_owner"
+        class="mt-8 rounded-lg bg-gray-50 border border-gray-200 px-4 py-3 text-sm text-gray-500">
+        Votre vote a été enregistré. Les résultats sont privés.
+      </div>
     </div>
   </main>
 </template>
